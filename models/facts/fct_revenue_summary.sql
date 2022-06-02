@@ -14,7 +14,7 @@ WITH BASE AS (
 )
 
 SELECT
-CUSTOMER_ID::number(22,2)           as CUSTOMER_ID,
+CUSTOMER_ID::varchar(256)           as CUSTOMER_ID,
 CAC::number(22,2)                   as CAC,
 conversion_rate::number(22,2)       as conversion_rate,
 main_ad_channels::variant           as main_ad_channels
