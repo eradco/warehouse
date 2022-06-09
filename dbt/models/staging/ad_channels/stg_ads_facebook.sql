@@ -73,6 +73,84 @@ SELECT
 2                               as ACQUSITIONS,  
 'USD'                           as CURRENCY_CODE,
 2234.123                        as COST
+
+UNION ALL
+-- CLIENT 2
+
+SELECT
+'2022-05-26'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-05-26'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-05-27'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-05-28'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-05-29'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-05-30'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
+
+UNION ALL
+
+SELECT
+'2022-06-01'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'facebook'                      as AD_CHANNEL,
+12                              as CONVERSIONS,
+2                               as ACQUSITIONS,  
+'USD'                           as CURRENCY_CODE,
+2234.123                        as COST
 )
 
 SELECT 
