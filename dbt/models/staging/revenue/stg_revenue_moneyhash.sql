@@ -59,6 +59,15 @@ SELECT
 'stripe'                        as REVENUE_SOURCE, 
 'USD'                           as CURRENCY_CODE,
 10000                           as REVENUE
+
+UNION ALL
+-- customer 2
+SELECT
+'2022-06-01'                    as DATE,
+'142'                           as CUSTOMER_ID,
+'stripe'                        as REVENUE_SOURCE, 
+'USD'                           as CURRENCY_CODE,
+1000585                         as REVENUE
 )
 
 SELECT 
