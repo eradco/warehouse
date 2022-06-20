@@ -31,9 +31,15 @@ WITH BASE AS (
         CUSTOMER_ID,
         AD_CHANNEL,
         CURRENCY_CODE,
-        ERAD_SOURCE,
+        LISTAGG(ERAD_SOURCE,', ') as ERAD_SOURCE,
 
-        CONVERSIONS,
-        ACQUSITIONS,
-        COST
-    FROM BASE
+        SUM(CONVERSIONS) CONVERSIONS,
+        SUM(ACQUSITIONS) ACQUSITIONS,
+        SUM(COST) COST
+    FROM BASE   
+
+    GROUP BY
+        DATE,
+        CUSTOMER_ID,
+        CURRENCY_CODE
+    
