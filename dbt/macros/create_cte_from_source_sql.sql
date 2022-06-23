@@ -4,10 +4,10 @@
     {{ columns|join(',\n') }}
 {% endset %}
 
-,{{ cte_name }} as (
+{{ cte_name }} as (
     SELECT
     {{ columns_str }}
-    FROM {{schema_name}}.{{table_name}} }}
+    FROM {{schema_name}}.{{table_name}}
 
     {% if where_clause!= '' %}
         {{ where_clause }}

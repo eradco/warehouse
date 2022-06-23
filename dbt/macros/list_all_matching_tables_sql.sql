@@ -1,4 +1,4 @@
-{% macro list_all_matching_tables(base_name, table_name, category_name='') %}
+{% macro list_all_matching_tables_sql(base_name, table_name, category_name='') %}
 
     SELECT
         TABLE_SCHEMA,
