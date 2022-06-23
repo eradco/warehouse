@@ -23,15 +23,15 @@
         )
 
         {% if currency_table != '' %}
-        ,CURRENCY_TABLES as (
-            {{currency_tables_sql}}
-        )
+            ,CURRENCY_TABLES as (
+                {{currency_tables_sql}}
+            )
         {% endif %}
 
         {% if timezone_table != '' %}
-        ,TIMEZONE_TABLES as (
-        {{timezone_tables_sql}}
-        )
+            ,TIMEZONE_TABLES as (
+            {{timezone_tables_sql}}
+            )
         {% endif %}
 
         SELECT DISTINCT

@@ -7,9 +7,10 @@
 ,{{ cte_name }} as (
     SELECT
     {{ columns_str }}
-    FROM {{ source(schema_name, table_name) }}
+    FROM {{schema_name}}.{{table_name}} }}
+
     {% if where_clause!= '' %}
-    {{ where_clause }}
+        {{ where_clause }}
     {% endif %}
 )
 

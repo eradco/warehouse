@@ -1,0 +1,1 @@
+{{ list_all_matching_tables('facebook', 'ACCOUNT_HISTORY', category_name='') }}
