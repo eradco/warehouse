@@ -19,6 +19,17 @@ WITH BASE AS (
         ERAD_REVENUE                    as REVENUE
     FROM {{ref('stg_revenue_stripe')}}
 
+    UNION ALL
+
+    SELECT 
+        ERAD_TIMESTAMP::DATE            as DATE,
+        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
+        'Shopify'                       as REVENUE_SOURCE,
+        'USD'                           as CURRENCY_CODE,
+        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
+        ERAD_REVENUE                    as REVENUE
+    FROM {{ref('stg_revenue_shopify')}}
+
 )
     SELECT 
         DATE,

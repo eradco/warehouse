@@ -3,7 +3,8 @@
     {% set cte_selects = [] %}
     {% for table_name in tables %}
         {% set i = loop.index-1 %}
-        {% set schema_name = schemas[i] %}
+        {% set table_name = '"{}"'.format(table_name|upper) %}
+        {% set schema_name = '"{}"'.format(schemas[i]|upper) %}
         {% set cte_name = cte_names[i] %}
         {{ cte_selects.append("SELECT * FROM {}".format(cte_name) ) }}
 
