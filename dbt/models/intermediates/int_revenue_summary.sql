@@ -7,7 +7,7 @@ WITH BASE AS (
         ERAD_SOURCE,
 
         REVENUE
-    FROM {{ref('stg_revenue_moneyhash')}}
+    FROM {{ref('stg_revenue_moneyhash_mock')}}
 
     UNION ALL
 
