@@ -10,17 +10,19 @@ ADS_BASE AS (
         CUSTOMER_ID,
         AD_CHANNEL,
         null                        as REVENUE_SOURCE,
-        'USD'                       as CURRENCY_CODE,
+        CURRENCY_CODE,
         ERAD_SOURCE,
         
         SUM(CONVERSIONS)            as CONVERSIONS,
         SUM(ACQUSITIONS)            as ACQUSITIONS,
         null                        as REVENUE,
-        SUM(COST)                   as EXPENSES
+        SUM(COST)                   as EXPENSES,
+        SUM(CLICKS)                 as CLICKS
 
     FROM {{ref('int_ads_summary')}}
     GROUP BY 1,2,3,4,5,6
 ),
+
 
 REVENUE_BASE AS (
     SELECT
@@ -34,7 +36,8 @@ REVENUE_BASE AS (
         null                        as CONVERSIONS,
         null                        as ACQUSITIONS,
         SUM(REVENUE)                as REVENUE,
-        null                        as EXPENSES
+        null                        as EXPENSES,
+        null                        as CLICKS
 
     FROM {{ref('int_revenue_summary')}}
     GROUP BY 1,2,3,4,5,6
@@ -53,8 +56,6 @@ AD_CHANNEL::varchar(256)            as AD_CHANNEL,
 REVENUE_SOURCE::varchar(256)        as REVENUE_SOURCE,
 CURRENCY_CODE::varchar(3)           as CURRENCY_CODE,   
 
---CAC::number(22,2)                   as CAC,
---conversion_rate::number(22,2)       as CONVERSION_RATE,
 REVENUE::number(22,2)               as REVENUE,
 EXPENSES::number(22,2)              as EXPENSES,
 

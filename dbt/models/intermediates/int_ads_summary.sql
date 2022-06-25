@@ -1,39 +1,32 @@
-WITH BASE AS (
-    SELECT 
-        Date,
-        CUSTOMER_ID,
-        AD_CHANNEL,
-        CURRENCY_CODE,
-        ERAD_SOURCE,
+WITH 
 
-        CONVERSIONS,
-        ACQUSITIONS,
-        COST
-    FROM {{ref('stg_ads_twitter')}}
+BASE AS (
+    SELECT 
+        ERAD_TIMESTAMP::DATE    as Date,
+        ERAD_CUSTOMER_ID        as CUSTOMER_ID,
+        'Google Ads'            as AD_CHANNEL,
+        'USD'                   as CURRENCY_CODE,
+        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
+        0                       as CONVERSIONS,
+        CLICKS                  as CLICKS,
+        0                       as ACQUSITIONS,
+        ERAD_COST               as COST
+    FROM {{ ref('stg_ads_google_ads') }}
 
     UNION ALL
 
     SELECT 
-        DATE,
-        CUSTOMER_ID,
-        AD_CHANNEL,
-        CURRENCY_CODE,
-        ERAD_SOURCE,
+        ERAD_TIMESTAMP::DATE    as Date,
+        ERAD_CUSTOMER_ID        as CUSTOMER_ID,
+        'TikTok Ads'            as AD_CHANNEL,
+        'USD'                   as CURRENCY_CODE,
+        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
+        0                       as CONVERSIONS,
+        CLICKS                  as CLICKS,
+        0                       as ACQUSITIONS,
+        ERAD_COST               as COST
+    FROM {{ ref('stg_ads_tiktok') }}
+    )
 
-        CONVERSIONS,
-        ACQUSITIONS,
-        COST
-    FROM {{ref('stg_ads_facebook')}}
-)
 
-    SELECT 
-        Date,
-        CUSTOMER_ID,
-        AD_CHANNEL,
-        CURRENCY_CODE,
-        ERAD_SOURCE,
-
-        CONVERSIONS,
-        ACQUSITIONS,
-        COST
-    FROM BASE
+SELECT * FROM BASE
