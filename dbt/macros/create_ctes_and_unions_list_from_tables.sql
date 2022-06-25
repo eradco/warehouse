@@ -1,4 +1,4 @@
-{% macro create_ctes_and_unions_list_from_tables(tables, schemas, cte_names, required_columns, where_clause) %}
+{% macro create_ctes_and_unions_list_from_tables(tables, schemas, cte_names, required_columns, where_clause='') %}
     {% set ctes = [] %}
     {% set cte_selects = [] %}
     {% for table_name in tables %}
