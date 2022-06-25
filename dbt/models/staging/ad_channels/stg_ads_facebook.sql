@@ -1,168 +1,27 @@
-WITH BASE AS (
-SELECT
-'2022-05-26'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
+WITH
+{{ build_fivetran_ctes_from_one_schema_table(
+    schema_base_name = 'facebook_ads', 
+    table_name = 'BASIC_CAMPAIGN', 
+    columns = ['CAMPAIGN_ID','MONTH', '_FIVETRAN_ID', 'ACCOUNT_ID', 'IMPRESSIONS', 'INLINE_LINK_CLICKS', 'REACH', 'CPC', 'CPM', 'CTR', 'FREQUENCY', 'SPEND', 'CAMPAIGN_NAME', '_FIVETRAN_SYNCED',],
+    cte_prefix='base') }}
 
-UNION ALL
-
-SELECT
-'2022-05-26'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-27'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-28'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-29'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-30'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-06-01'                    as DATE,
-'12346'                         as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
--- CLIENT 2
-
-SELECT
-'2022-05-26'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-26'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-27'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-28'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-29'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-05-30'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-
-UNION ALL
-
-SELECT
-'2022-06-01'                    as DATE,
-'142'                           as CUSTOMER_ID,
-'facebook'                      as AD_CHANNEL,
-12                              as CONVERSIONS,
-2                               as ACQUSITIONS,  
-'USD'                           as CURRENCY_CODE,
-2234.123                        as COST
-)
-
+,{{ build_fivetran_ctes_from_one_schema_table(
+    schema_base_name = 'facebook_ads', 
+    table_name = 'ACCOUNT_HISTORY', 
+    columns = ['ACCOUNT_ID', 'CURRENCY', 'TIMEZONE_NAME'],
+    cte_prefix='ACCOUNT',
+    cte_query_template = '
+    SELECT DISTINCT ID, 
+    FIRST_VALUE(CURRENCY) over (partition by ID order by CREATED_TIME desc) as CURRENCY, 
+    FIRST_VALUE(TIMEZONE_NAME) over (partition by ID order by CREATED_TIME desc) as TIMEZONE_NAME, 
+    FIRST_VALUE(TIMEZONE_OFFSET_HOURS_UTC) over (partition by ID order by CREATED_TIME desc) as TIMEZONE_OFFSET_HOURS_UTC,
+    {meta_columns} 
+    FROM {schema}.{table}') }}
+    
 SELECT 
-DATE,
-CUSTOMER_ID,
-AD_CHANNEL,
-CURRENCY_CODE,
-'facebookads_fivetran' as ERAD_SOURCE,
-
-CONVERSIONS,
-ACQUSITIONS,
-COST,
-
-current_timestamp()::timestamp_tz as ERAD_UPDATED_AT
-FROM BASE
+BASE_UNION.*,
+ACCOUNT_UNION.CURRENCY,
+ACCOUNT_UNION.TIMEZONE_NAME,
+ACCOUNT_UNION.TIMEZONE_OFFSET_HOURS_UTC
+FROM BASE_UNION
+INNER JOIN ACCOUNT_UNION ON (BASE_UNION.ERAD_CUSTOMER_ID = ACCOUNT_UNION.ERAD_CUSTOMER_ID and BASE_UNION.ACCOUNT_ID = ACCOUNT_UNION.ID)
