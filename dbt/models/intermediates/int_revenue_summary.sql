@@ -1,27 +1,14 @@
 WITH BASE AS (
     SELECT 
-        DATE,
-        CUSTOMER_ID,
-        REVENUE_SOURCE,
-        CURRENCY_CODE,
-        ERAD_SOURCE,
+        ERAD_TIMESTAMP::DATE            as DATE,
+        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
+        'Zid'                           as REVENUE_SOURCE,
+        'USD'                           as CURRENCY_CODE,
+        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
+        ERAD_REVENUE                    as REVENUE
+    FROM {{ref('stg_revenue_zid')}}
 
-        REVENUE
-    FROM {{ref('stg_revenue_moneyhash')}}
-
-    UNION ALL
-
-    SELECT 
-        DATE,
-        CUSTOMER_ID,
-        REVENUE_SOURCE,
-        CURRENCY_CODE,
-        ERAD_SOURCE,
-
-        REVENUE
-    FROM {{ref('stg_revenue_salla')}}
 )
-
     SELECT 
         DATE,
         CUSTOMER_ID,
