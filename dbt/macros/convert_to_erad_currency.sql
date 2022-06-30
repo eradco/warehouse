@@ -5,6 +5,7 @@ CASE
     WHEN {current_currency} ilike 'INR' THEN {currency_value} * {DBT_INR_TO_USD_RATE}
     WHEN {current_currency} ilike 'EUR' THEN {currency_value} * {DBT_EUR_TO_USD_RATE}
     WHEN {current_currency} ilike 'GBP' THEN {currency_value} * {DBT_GBP_TO_USD_RATE}
+    WHEN {current_currency} ilike 'SAR' THEN {currency_value} * {DBT_SAR_TO_USD_RATE}
     WHEN {current_currency} ilike 'USD' THEN {currency_value}
 END
 ".format(
@@ -13,6 +14,7 @@ END
     DBT_AED_TO_USD_RATE = env_var('DBT_AED_TO_USD_RATE'),
     DBT_INR_TO_USD_RATE = env_var('DBT_INR_TO_USD_RATE'),
     DBT_EUR_TO_USD_RATE = env_var('DBT_EUR_TO_USD_RATE'),
-    DBT_GBP_TO_USD_RATE = env_var('DBT_GBP_TO_USD_RATE')
+    DBT_GBP_TO_USD_RATE = env_var('DBT_GBP_TO_USD_RATE'),
+    DBT_SAR_TO_USD_RATE = env_var('DBT_SAR_TO_USD_RATE')
 )-}}
 {% endmacro %}

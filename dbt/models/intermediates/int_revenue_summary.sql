@@ -1,64 +1,42 @@
-WITH BASE AS (
+WITH 
+revenue_payments AS (
     SELECT 
-        ERAD_TIMESTAMP::DATE            as DATE,
-        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
-        'Zid'                           as REVENUE_SOURCE,
-        'USD'                           as CURRENCY_CODE,
-        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
-    FROM {{ref('stg_revenue_zid')}}
-
-    UNION ALL
-
-    SELECT 
-        ERAD_TIMESTAMP::DATE            as DATE,
-        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
-        'Stripe'                        as REVENUE_SOURCE,
-        'USD'                           as CURRENCY_CODE,
-        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
-    FROM {{ref('stg_revenue_stripe')}}
-
-    UNION ALL
-
-    SELECT 
-        ERAD_TIMESTAMP::DATE            as DATE,
-        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
-        'Shopify'                       as REVENUE_SOURCE,
-        'USD'                           as CURRENCY_CODE,
-        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
-    FROM {{ref('stg_revenue_shopify')}}
-
-    UNION ALL
-
-    SELECT 
-        ERAD_TIMESTAMP::DATE            as DATE,
-        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
-        'Magento'                       as REVENUE_SOURCE,
-        'USD'                           as CURRENCY_CODE,
-        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
-    FROM {{ref('stg_revenue_magento')}}
-
-    UNION ALL
-
-    SELECT 
-        ERAD_TIMESTAMP::DATE            as DATE,
-        ERAD_CUSTOMER_ID                as CUSTOMER_ID,
+        DATE                            as DATE,
+        CUSTOMER_ID                     as CUSTOMER_ID,
         'TAP Payments'                  as REVENUE_SOURCE,
         'USD'                           as CURRENCY_CODE,
-        CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
-    FROM {{ref('stg_revenue_tappayments')}}
+        ERAD_SOURCE                     as ERAD_SOURCE,
+        REVENUE                         as REVENUE
+    FROM {{ref('stg_revenue_payments')}}),
 
-)
+revenue_sales AS (
+    SELECT 
+        DATE                            as DATE,
+        CUSTOMER_ID                     as CUSTOMER_ID,
+        'Magento'                       as REVENUE_SOURCE,
+        'USD'                           as CURRENCY_CODE,
+        ERAD_SOURCE                     as ERAD_SOURCE,
+        REVENUE                         as REVENUE
+    FROM {{ref('stg_revenue_sales')}}
+    WHERE CUSTOMER_ID NOT IN (SELECT DISTINCT CUSTOMER_ID FROM revenue_payments)
+    )
+
     SELECT 
         DATE,
         CUSTOMER_ID,
         REVENUE_SOURCE,
         CURRENCY_CODE,
         ERAD_SOURCE,
-
         REVENUE
-    FROM BASE
+    FROM {{ref('stg_revenue_sales')}}
+
+    UNION ALL
+
+    SELECT 
+        DATE,
+        CUSTOMER_ID,
+        REVENUE_SOURCE,
+        CURRENCY_CODE,
+        ERAD_SOURCE,
+        REVENUE
+    FROM {{ref('stg_revenue_payments')}}
