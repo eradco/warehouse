@@ -17,7 +17,8 @@ ADS_BASE AS (
         SUM(ACQUSITIONS)            as ACQUSITIONS,
         null                        as REVENUE,
         SUM(COST)                   as EXPENSES,
-        SUM(CLICKS)                 as CLICKS
+        SUM(CLICKS)                 as CLICKS,
+        null                        as TRANSACTIONS
 
     FROM {{ref('int_ads_summary')}}
     GROUP BY 1,2,3,4,5,6
@@ -37,7 +38,8 @@ REVENUE_BASE AS (
         null                        as ACQUSITIONS,
         SUM(REVENUE)                as REVENUE,
         null                        as EXPENSES,
-        null                        as CLICKS
+        null                        as CLICKS,
+        sum(TRANSACTIONS)           as TRANSACTIONS
 
     FROM {{ref('int_revenue_summary')}}
     GROUP BY 1,2,3,4,5,6
@@ -58,6 +60,7 @@ CURRENCY_CODE::varchar(3)           as CURRENCY_CODE,
 
 REVENUE::number(22,2)               as REVENUE,
 EXPENSES::number(22,2)              as EXPENSES,
+TRANSACTIONS::number(22,2)          as TRANSACTIONS,
 
 current_timestamp()::timestamp_tz   as ERAD_UPDATED_AT
 

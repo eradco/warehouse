@@ -5,7 +5,8 @@ WITH BASE AS (
         'Stripe'                        as REVENUE_SOURCE,
         'USD'                           as CURRENCY_CODE,
         CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
+        ERAD_REVENUE                    as REVENUE,
+        TRANSACTIONS                    as TRANSACTIONS
     FROM {{ref('stg_revenue_stripe')}}
 
     UNION ALL
@@ -16,7 +17,8 @@ WITH BASE AS (
         'TAP Payments'                  as REVENUE_SOURCE,
         'USD'                           as CURRENCY_CODE,
         CONCAT(ERAD_SCHEMA,'.',ERAD_TABLE) as ERAD_SOURCE,
-        ERAD_REVENUE                    as REVENUE
+        ERAD_REVENUE                    as REVENUE,
+        TRANSACTIONS                    as TRANSACTIONS
     FROM {{ref('stg_revenue_tappayments')}}
 
 )
@@ -28,5 +30,6 @@ SELECT
     CURRENCY_CODE,
     ERAD_SOURCE,
 
-    REVENUE
+    REVENUE,
+    TRANSACTIONS
 FROM BASE
