@@ -10,6 +10,7 @@ BASE_UNION.ERAD_CUSTOMER_ID,
 CURRENCY_CODE as CURRENCY,
 'Asia/Dubai' as TIMEZONE_NAME, -- TODO timezone is static because there isnt a column currently providing the field
 {{ convert_to_erad_tz('BASE_UNION.CREATED_AT', 'TIMEZONE_NAME') }} as ERAD_TIMESTAMP,
+1 as transactions,
 BASE_UNION.ID,
 BASE_UNION.CODE,
 BASE_UNION.REQUIRES_SHIPPING,

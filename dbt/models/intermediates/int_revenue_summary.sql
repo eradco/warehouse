@@ -6,7 +6,8 @@ revenue_payments AS (
         'TAP Payments'                  as REVENUE_SOURCE,
         'USD'                           as CURRENCY_CODE,
         ERAD_SOURCE                     as ERAD_SOURCE,
-        REVENUE                         as REVENUE
+        REVENUE                         as REVENUE,
+        TRANSACTIONS                    as TRANACTIONS
     FROM {{ref('stg_revenue_payments')}}),
 
 revenue_sales AS (
@@ -16,7 +17,8 @@ revenue_sales AS (
         'Magento'                       as REVENUE_SOURCE,
         'USD'                           as CURRENCY_CODE,
         ERAD_SOURCE                     as ERAD_SOURCE,
-        REVENUE                         as REVENUE
+        REVENUE                         as REVENUE,
+        TRANSACTIONS                    as TRANACTIONS
     FROM {{ref('stg_revenue_sales')}}
     WHERE CUSTOMER_ID NOT IN (SELECT DISTINCT CUSTOMER_ID FROM revenue_payments)
     )
@@ -27,7 +29,8 @@ revenue_sales AS (
         REVENUE_SOURCE,
         CURRENCY_CODE,
         ERAD_SOURCE,
-        REVENUE
+        REVENUE,
+        TRANSACTIONS
     FROM {{ref('stg_revenue_sales')}}
 
     UNION ALL
@@ -38,5 +41,6 @@ revenue_sales AS (
         REVENUE_SOURCE,
         CURRENCY_CODE,
         ERAD_SOURCE,
-        REVENUE
+        REVENUE,
+        TRANSACTIONS
     FROM {{ref('stg_revenue_payments')}}

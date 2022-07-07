@@ -9,6 +9,7 @@ SELECT
 BASE_UNION.ERAD_CUSTOMER_ID,
 'UTC' as TIMEZONE_NAME, -- TODO timezone is static because there isnt a column currently providing the field
 {{ convert_to_erad_tz('BASE_UNION.CREATED_AT::date', 'TIMEZONE_NAME') }} as ERAD_TIMESTAMP,
+1 as transactions,
 BASE_UNION.ID,
 BASE_UNION.NOTE,
 BASE_UNION.EMAIL,
