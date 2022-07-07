@@ -61,6 +61,7 @@ CURRENCY_CODE::varchar(3)           as CURRENCY_CODE,
 REVENUE::number(22,2)               as REVENUE,
 EXPENSES::number(22,2)              as EXPENSES,
 TRANSACTIONS::number(22,2)          as TRANSACTIONS,
+CLICKS::number(22,2)                as CLICKS,
 
 current_timestamp()::timestamp_tz   as ERAD_UPDATED_AT
 
