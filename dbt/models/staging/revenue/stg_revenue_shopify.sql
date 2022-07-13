@@ -115,4 +115,4 @@ BASE_UNION.ERAD_SCHEMA,
 BASE_UNION.ERAD_TABLE
 
 FROM BASE_UNION
-WHERE BASE_UNION.Financial_Status ilike 'Paid' AND BASE_UNION.Fulfilment_Status ilike 'Fulfilled'
+WHERE BASE_UNION.Financial_Status ilike 'Paid' AND BASE_UNION.Fulfillment_Status ilike 'Fulfilled' 
