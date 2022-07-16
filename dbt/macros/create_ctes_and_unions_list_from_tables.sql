@@ -16,7 +16,9 @@
             {% set meta_columns = "'{}' as erad_schema,\n'{}' as erad_table".format(schema_name, table_name) %}
         {% endif %}
 
-        {% set cte_query = cte_query_template.format(schema=schema_name, table=table_name, columns= required_columns|join(",\n"), meta_columns=meta_columns) %}
+        {% set mapped_columns=check_and_set_not_existing_columns(table_name, schema_name, required_columns, default_value='null') %}
+
+        {% set cte_query = cte_query_template.format(schema=schema_name, table=table_name, columns= mapped_columns|join(",\n"), meta_columns=meta_columns) %}
         {% set cte = "{cte_name} as (\n{cte_query})\n".format(cte_name=cte_name, cte_query=cte_query) %}
         {{ ctes.append(cte) }}
     {% endfor %}
